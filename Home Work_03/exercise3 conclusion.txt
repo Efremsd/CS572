@@ -1,0 +1,7 @@
+
+.........................................................
+   Conclusion
+
+A file with 201 MB is created. It is observed that Stream solution is the best memory efficient one.
+Both readFileSync and readFile have a similar result. They occupy the whole size of the file in RAM.
+Stream solution tends to use little RAM for any file reading regardless of the size. 
