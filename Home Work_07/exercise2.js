@@ -77,7 +77,7 @@ app.delete('/lectures/:course', function (req, res) {
     });
 });
 
-app.post('/search/:q', function (req, res) {
+app.get('/search/:q', function (req, res) {
     const patt = req.params.q;
     collection.find({ course: { $regex: patt } }).toArray(function (err, doc) {
         res.json(doc);
