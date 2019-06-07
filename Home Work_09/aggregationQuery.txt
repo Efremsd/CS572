@@ -1,0 +1,91 @@
+### Exercise
+
+1. Find all the zip codes in Washington state
+
+```
+aggregate([
+    {
+      $match: { state: "WA" }
+    },
+    {
+      $group: {
+        _id: "",
+        zips: { $addToSet: "$_id" }
+      }
+    }
+])
+```
+2. Find all the zip codes with a population less than 5000
+
+```
+aggregate([
+    {
+      $match: {
+        pop: { $lt: 5000 }
+      }
+    },
+    {
+      $group: {
+        _id: "",
+        zips: { $addToSet: "$_id" }
+      }
+    }
+])
+```
+3. Find all the cities that have more than one zip code, sort the results based by state and city name
+
+```
+aggregate([
+    {
+      $group: {
+        _id: "$city",
+        zips: { $addToSet: "$_id" },
+        state: {$first: "$state"}
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        zips: 1,
+        size: { $size: "$zips" },
+        state: 1
+      }
+    },
+    {
+      $sort: {
+        state: 1,
+        city: 1
+      }
+    },
+    {
+      $match: {
+        size: { $gt: 1 }
+      }
+    }
+])
+```
+4. Display the least populated city in each state
+
+```
+db.zips.aggregate([
+    {
+      $group: {
+        _id: { state: "$state", city: "$city" },
+        pop: { $sum: "$pop" }
+      }
+    },
+    {
+      $sort: {
+        "_id.state": 1,
+        pop: 1
+      }
+    },
+    {
+      $group: {
+        _id: "$_id.state",
+        city: { $first: "$_id.city" },
+        pop: { $first: "$pop" }
+      }
+    }
+])
+```
