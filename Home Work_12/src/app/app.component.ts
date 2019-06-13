@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
-  title = 'Lab 11';
+  title = 'homework12';
   value = 0;
 
   handleInputChange(e) {
